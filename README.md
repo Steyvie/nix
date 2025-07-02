@@ -1,2 +1,2 @@
-# ❄️ nix
+# ❄️ Steefs NixOS config
 configuration.nix
