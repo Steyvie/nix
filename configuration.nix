@@ -33,7 +33,7 @@
   };
 
   services.printing.enable = true;
-  fonts.packages = with pkgs; [ inter fira-code ];
+  fonts.packages = with pkgs; [ inter fira-code font-awesome ];
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -41,6 +41,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   users.users.steven = {
@@ -48,39 +49,72 @@
     description = "steven";
     extraGroups = [ "networkmanager" "wheel" ];
   };
-
-  nixpkgs.config.allowUnfree = true;
+  
+  /*
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      unstable = import <nix-os-unstable> {
+        config = config.nixpkgs.config;
+      };
+    };
+  };
+  */
+    
+  nixpkgs.config.allowUnfree = true;   
   environment.systemPackages = with pkgs; [
-    wget
-    git
-    wayfire
-    gparted
-    zed-editor
-    signal-desktop
-    protonvpn-gui
-    firefox
-    amberol
-    neofetch
-    wlr-randr
-    thunderbird
-    steam
-    gamescope
-    mangohud
-    tmux
-    github-desktop
-    prismlauncher
-    rustup
-    mint-y-icons
-    waybar
     adw-gtk3
+    amberol
+    # bottles
+    firefox
+    eduvpn-client
+    # gamescope
+    gedit
+    # ghostty
+    git
+    # github-desktop
+    # gparted
+    gradience
+    # krita
+    # mangohud
+    mint-y-icons
+    neofetch
+    networkmanager-vpnc
+    nix-search
+    # pika-backup
+    # prismlauncher
+    # protonvpn-gui
+    # rustup
+    # signal-desktop
+    # steam
+    swaybg
+    # thunderbird
+    tmux
+    # vlc
+    waybar
+    wayfire
+    wlr-randr
+    wget
+    wofi
+    xfce.xfce4-docklike-plugin
+    xfce.xfce4-whiskermenu-plugin
+    # zed-editor
   ];
 
   programs.wayfire = {
     enable = true;
-    plugins = with pkgs.wayfirePlugins; [ wcm wf-shell wayfire-plugins-extra ];
+    plugins = with pkgs.wayfirePlugins; [ wcm firedecor windecor wayfire-plugins-extra ];
   };
-
+  
   services.openssh.enable = true;
-
+  
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["steven"];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true; 
+  
   system.stateVersion = "25.05";
 }
+
+# sudo nixos-update switch --upgrade
+# sudo nix-collect-garbage -d
